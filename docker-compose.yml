@@ -1,0 +1,39 @@
+version: '3'
+services:
+
+  dsw_server:
+    image: datastewardshipwizard/server:1.7.0
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server/application.yml:/dsw/config/application.yml
+      - ./server/integration.yml:/dsw/config/integration.yml
+
+  dsw_client:
+    image: datastewardshipwizard/client:1.7.0
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - API_URL=http://localhost:3000
+    volumes:
+      - ./client/variables.scss:/customizations/variables.scss
+      - ./client/assets:/user/share/nginx/html/assets
+
+  mongo:
+      image: mongo:3.0.15
+      restart: always
+      ports:
+        - 27017:27017
+
+  # Worker is neccessary only if feedback is enabled
+  dsw_server_worker:
+    image: datastewardshipwizard/crontab
+    restart: on-failure:10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./worker/worker-config.json:/opt/crontab/config.json
+    environment:
+      - API_URL=http://localhost:3000
+      - SERVICE_TOKEN=NlQSNbGvh7EtcpinGnHE9g91
