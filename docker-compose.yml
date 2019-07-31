@@ -22,7 +22,7 @@ services:
       - ./client/assets:/user/share/nginx/html/assets
 
   mongo:
-      image: mongo:3.0.15
+      image: mongo
       restart: always
       ports:
         - 27017:27017
