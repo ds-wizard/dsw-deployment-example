@@ -19,7 +19,7 @@ services:
       - API_URL=http://localhost:3000
     volumes:
       - ./client/variables.scss:/customizations/variables.scss
-      - ./client/assets:/user/share/nginx/html/assets
+      - ./client/assets:/usr/share/nginx/html/assets
 
   mongo:
       image: mongo:3.0.15
