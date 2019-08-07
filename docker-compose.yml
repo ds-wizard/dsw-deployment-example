@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/server:1.9.0
+    image: datastewardshipwizard/server:1.9.1
     restart: always
     ports:
       - 3000:3000
