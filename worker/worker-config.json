@@ -1,5 +1,0 @@
-[{
-    "comment": "Synchronize all feedbacks with GitHub (runs every day at 2am)",
-    "schedule":"0 2 * * *",
-    "command":"wget --header \"Authorization: Bearer ${SERVICE_TOKEN}\" \"${API_URL}/feedbacks/synchronization\""
-}]

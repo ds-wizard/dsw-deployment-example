@@ -2,23 +2,25 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/server:1.10.0
+    image: datastewardshipwizard/wizard-server:2.0.0
     restart: always
     ports:
       - 3000:3000
     volumes:
-      - ./server/application.yml:/dsw/config/application.yml
-      - ./server/integration.yml:/dsw/config/integration.yml
+      - ./server/application.yml:/application/engine-wizard/config/application.yml
+      - ./server/integration.yml:/application/engine-wizard/config/integration.yml
 
   dsw_client:
-    image: datastewardshipwizard/client:1.10.0
+    image: datastewardshipwizard/wizard-client:2.0.0
     restart: always
     ports:
       - 8080:80
     environment:
       - API_URL=http://localhost:3000
     volumes:
-      - ./client/variables.scss:/customizations/variables.scss
+      - ./client/extras.scss:/src/scss/customizations/_extras.scss
+      - ./client/overrides.scss:/src/scss/customizations/_overrides.scss
+      - ./client/variables.scss:/src/scss/customizations/_variables.scss
       - ./client/assets:/usr/share/nginx/html/assets
 
   mongo:
@@ -26,16 +28,5 @@ services:
       restart: always
       ports:
         - 27017:27017
-      volumes:
-          - ./mongo/data:/data/db
-
-  # Worker is neccessary only if feedback is enabled
-  dsw_server_worker:
-    image: datastewardshipwizard/crontab
-    restart: on-failure:10
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./worker/worker-config.json:/opt/crontab/config.json
-    environment:
-      - API_URL=http://localhost:3000
-      - SERVICE_TOKEN=NlQSNbGvh7EtcpinGnHE9g91
+      # volumes:
+      #     - ./mongo/data:/data/db
