@@ -2,31 +2,51 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.0.0
+    image: datastewardshipwizard/wizard-server:2.1.0
     restart: always
     ports:
       - 3000:3000
     volumes:
-      - ./server/application.yml:/application/engine-wizard/config/application.yml
-      - ./server/integration.yml:/application/engine-wizard/config/integration.yml
+      - ./server/application.yml:/application/engine-wizard/config/application.yml:ro
+      - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
+      - dmp-templates:/application/engine-wizard/templates/dmp:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.0.0
+    image: datastewardshipwizard/wizard-client:2.1.0
     restart: always
     ports:
       - 8080:80
     environment:
       - API_URL=http://localhost:3000
     volumes:
-      - ./client/extras.scss:/src/scss/customizations/_extras.scss
-      - ./client/overrides.scss:/src/scss/customizations/_overrides.scss
-      - ./client/variables.scss:/src/scss/customizations/_variables.scss
-      - ./client/assets:/usr/share/nginx/html/assets
+      - ./client/extras.scss:/src/scss/customizations/_extras.scss:ro
+      - ./client/overrides.scss:/src/scss/customizations/_overrides.scss:ro
+      - ./client/variables.scss:/src/scss/customizations/_variables.scss:ro
+      - ./client/assets:/usr/share/nginx/html/assets:ro
+
+  docworker:
+    image: datastewardshipwizard/document-worker:2.1.0
+    restart: always
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./docworker/config.cfg:/app/config.cfg:ro
+      - dmp-templates:/app/templates:ro
 
   mongo:
-      image: mongo:4.0.12
-      restart: always
-      ports:
-        - 27017:27017
-      # volumes:
-      #     - ./mongo/data:/data/db
+    image: mongo:4.0.12
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo/data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3.8.2-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  dmp-templates:

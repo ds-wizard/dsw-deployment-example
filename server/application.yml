@@ -4,11 +4,16 @@ general:
 
 database:
   host: mongo
-  databaseName: dsw-server
+  databaseName: wizard
   port: 27017
   authEnabled: false
   username:
   password:
+
+messaging:
+  enabled: true
+  username: guest
+  password: guest
 
 jwt:
   secret: gVoYNuEJuGGAQMIaYw43BN3e
