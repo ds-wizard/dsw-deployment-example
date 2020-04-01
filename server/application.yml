@@ -1,5 +1,6 @@
 general:
   clientUrl: http://localhost:8080
+  secret: b7zFNUhFYIFLmDSFKFkp0Bnp8Z3uWGnH
   serviceToken: NlQSNbGvh7EtcpinGnHE9g91
 
 database:
@@ -15,9 +16,6 @@ messaging:
   username: guest
   password: guest
 
-jwt:
-  secret: gVoYNuEJuGGAQMIaYw43BN3e
-
 mail:
   enabled: false
   name:
@@ -28,9 +26,3 @@ mail:
   authEnabled:
   username:
   password:
-
-feedback:
-  enabled: false
-  token:
-  owner:
-  repo:

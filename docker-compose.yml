@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.1.0
+    image: datastewardshipwizard/wizard-server:2.2.0
     restart: always
     ports:
       - 3000:3000
@@ -12,7 +12,7 @@ services:
       - dmp-templates:/application/engine-wizard/templates/dmp:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.1.0
+    image: datastewardshipwizard/wizard-client:2.2.0
     restart: always
     ports:
       - 8080:80
@@ -25,8 +25,7 @@ services:
       - ./client/assets:/usr/share/nginx/html/assets:ro
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.1.0
-    restart: always
+    image: datastewardshipwizard/document-worker:2.2.0
     depends_on:
       - rabbitmq
     volumes:
