@@ -9,3 +9,9 @@ $ docker-compose up -d
 ```
 
 We recommend reading the [Installation](https://docs.ds-wizard.org/en/latest/admin/installation.html) and [Configuration](https://docs.ds-wizard.org/en/latest/admin/configuration.html) chapters in the documentation. After starting the DSW, you can log in using [Default User Accounts](https://docs.ds-wizard.org/en/latest/admin/installation.html#default-users). The fresh installation does not contain any knowledge model, you can read about how to get the [Initial Knowledge Model](https://docs.ds-wizard.org/en/latest/admin/installation.html#initial-knowledge-model).
+
+## Important notes
+
+* Do not expose RabbitMQ and MongoDB to the internet
+* When want to use publicly, set up proxy with a certificate for your domain
+* Set up backups for folder mounted to MongoDB container

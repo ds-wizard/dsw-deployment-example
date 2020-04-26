@@ -12,7 +12,6 @@ database:
   password:
 
 messaging:
-  enabled: true
   username: guest
   password: guest
 
