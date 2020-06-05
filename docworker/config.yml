@@ -1,0 +1,16 @@
+mongo:
+  host: mongo
+  port: 27017
+  database: wizard
+
+mq:
+  host: rabbitmq
+  port: 5672
+  vhost: /
+  queue: document.generation
+  auth:
+    username: guest
+    password: guest
+
+logging:
+  level: INFO
