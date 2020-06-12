@@ -35,6 +35,7 @@ services:
 
   docworker:
     image: datastewardshipwizard/document-worker:2.4.0
+    restart: always
     depends_on:
       - rabbitmq
     volumes:
