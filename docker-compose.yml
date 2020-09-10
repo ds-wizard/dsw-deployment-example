@@ -8,6 +8,10 @@ services:
     # (!) Do not expose ports if using proxy
     ports:
       - 3000:3000
+    # To load custom templates
+    # environment:
+    #   ENABLE_TEMPLATE_LOAD: 1
+    #   SERVICE_TOKEN: <same as in application.yml>
     depends_on:
       - rabbitmq
       - mongo
