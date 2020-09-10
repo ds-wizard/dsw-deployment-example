@@ -27,11 +27,11 @@ services:
     # (i) Change to your domain if using proxy: domain.tld:3443
       API_URL: http://localhost:3000
     # (i) If you want to adjust look&feel/branding
-    #volumes:  
-    #  - ./client/extras.scss:/src/scss/customizations/_extras.scss:ro
-    #  - ./client/overrides.scss:/src/scss/customizations/_overrides.scss:ro
-    #  - ./client/variables.scss:/src/scss/customizations/_variables.scss:ro
-    #  - ./client/assets:/usr/share/nginx/html/assets:ro
+    # volumes:
+    #   - ./client/extras.scss:/src/scss/customizations/_extras.scss:ro
+    #   - ./client/overrides.scss:/src/scss/customizations/_overrides.scss:ro
+    #   - ./client/variables.scss:/src/scss/customizations/_variables.scss:ro
+    #   - ./client/assets:/usr/share/nginx/html/assets:ro
 
   docworker:
     image: datastewardshipwizard/document-worker:2.5.0
