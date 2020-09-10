@@ -43,7 +43,7 @@ services:
       - ./templates/dmp:/app/templates:ro
 
   mongo:
-    image: mongo:4.2.3
+    image: mongo:4.2
     restart: always
     # (!) Expose only for debugging locally or set-up authentication
     # ports:
