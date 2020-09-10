@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.4.0
+    image: datastewardshipwizard/wizard-server:2.6.0
     restart: always
     hostname: dsw_server
     # (!) Do not expose ports if using proxy
@@ -14,10 +14,9 @@ services:
     volumes:
       - ./server/application.yml:/application/engine-wizard/config/application.yml:ro
       - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
-      - dmp-templates:/application/engine-wizard/templates/dmp:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.4.0
+    image: datastewardshipwizard/wizard-client:2.6.0
     restart: always
     hostname: dsw_client
     # (!) Do not expose ports if using proxy
@@ -34,13 +33,12 @@ services:
     #  - ./client/assets:/usr/share/nginx/html/assets:ro
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.4.0
+    image: datastewardshipwizard/document-worker:2.6.0
     restart: always
     depends_on:
       - rabbitmq
     volumes:
       - ./docworker/config.yml:/app/config.yml:ro
-      - dmp-templates:/app/templates:ro
 
   mongo:
     image: mongo:4.2.3
@@ -79,6 +77,3 @@ services:
   #     - ./proxy/nginx:/etc/nginx:ro
   #     - /etc/letsencrypt:/etc/letsencrypt:ro
   #     - /var/www/letsencrypt:/var/www/letsencrypt:ro
-
-volumes:
-  dmp-templates:
