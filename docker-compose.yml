@@ -14,7 +14,7 @@ services:
     volumes:
       - ./server/application.yml:/application/engine-wizard/config/application.yml:ro
       - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
-      - dmp-templates:/application/engine-wizard/templates/dmp:ro
+      - ./templates/dmp:/application/engine-wizard/templates/dmp:ro
 
   dsw_client:
     image: datastewardshipwizard/wizard-client:2.5.0
@@ -40,7 +40,7 @@ services:
       - rabbitmq
     volumes:
       - ./docworker/config.yml:/app/config.yml:ro
-      - dmp-templates:/app/templates:ro
+      - ./templates/dmp:/app/templates:ro
 
   mongo:
     image: mongo:4.2.3
@@ -79,6 +79,3 @@ services:
   #     - ./proxy/nginx:/etc/nginx:ro
   #     - /etc/letsencrypt:/etc/letsencrypt:ro
   #     - /var/www/letsencrypt:/var/www/letsencrypt:ro
-
-volumes:
-  dmp-templates:
