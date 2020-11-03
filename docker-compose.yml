@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.7.1
+    image: datastewardshipwizard/wizard-server:2.8.0
     restart: always
     hostname: dsw_server
     # (!) Do not expose ports if using proxy
@@ -16,7 +16,7 @@ services:
       - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.7.0
+    image: datastewardshipwizard/wizard-client:2.8.0
     restart: always
     hostname: dsw_client
     # (!) Do not expose ports if using proxy
@@ -33,7 +33,7 @@ services:
     #  - ./client/assets:/usr/share/nginx/html/assets:ro
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.7.0
+    image: datastewardshipwizard/document-worker:2.8.0
     restart: always
     depends_on:
       - rabbitmq
