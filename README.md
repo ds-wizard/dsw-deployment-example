@@ -1,6 +1,8 @@
 # DSW Deployment Example
 
-:exclamation: This example is intended for **local setup and testing**. For production use do not forget to set authentication or control exposed ports (e.g. do not expose ports of `mongo` and `rabbitmq`).
+:exclamation: This example is intended for **local setup and testing**. For production use there are many more things to do such as authentication, controlling exposed ports (e.g. do not expose ports of `mongo` and `rabbitmq`), data backups, or using proxy. As it is highly dependent on your use case, consult production deployment with your sysadmin or contact us for [professional services](https://ds-wizard.org/services.html).
+
+## Usage
 
 This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [docker-compose](https://docs.docker.com/compose/). You can clone the repository and run it with:
 

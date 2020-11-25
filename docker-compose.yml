@@ -2,10 +2,9 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.8.0
+    image: datastewardshipwizard/wizard-server:2.8.1
     restart: always
     hostname: dsw_server
-    # (!) Do not expose ports if using proxy
     ports:
       - 3000:3000
     depends_on:
@@ -19,11 +18,9 @@ services:
     image: datastewardshipwizard/wizard-client:2.8.0
     restart: always
     hostname: dsw_client
-    # (!) Do not expose ports if using proxy
     ports:
       - 8080:80
     environment:
-    # (i) Change to your domain if using proxy: domain.tld:3443
       API_URL: http://localhost:3000
     # (i) If you want to adjust look&feel/branding
     #volumes:  
@@ -37,6 +34,8 @@ services:
     restart: always
     depends_on:
       - rabbitmq
+    ports:
+      - 5672:5672
     volumes:
       - ./docworker/config.yml:/app/config.yml:ro
 
@@ -45,35 +44,26 @@ services:
     restart: always
     # (!) Expose only for debugging locally or set-up authentication
     # ports:
-    #   - 27017:27017
+    #   - 127.0.0.1:27017:27017
     # command: mongod --auth
     # environment:
     #   MONGO_INITDB_ROOT_USERNAME: admin
     #   MONGO_INITDB_ROOT_PASSWORD: secure-password
     # (!) Mount and backup for persistent data
     # volumes:
-    #  - ./mongo/data:/data/db
+    #  - mongo-data:/data/db
+    # OR (not working with Windows)
+    #  - ./mongo:/data/db
 
   rabbitmq:
     image: rabbitmq:3.8.2-management
     restart: always
     # (!) Expose only for debugging locally or set-up authentication
     # ports:
-    #   - 15672:15672
+    #   - 127.0.0.1:15672:15672
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
-  # (i) Use proxy if you want to expose DSW on some domain
-  #     Follow certbot instructions and generate cert with
-  #     "webroot -w /var/www/letsencrypt"
-  # proxy:
-  #   image: nginx:1.17
-  #   ports:
-  #     - 80:80 #< for certbot (otherwise redirected to 443)
-  #     - 443:443 #< for client
-  #     - 3443:3443 #< for server/api
-  #   volumes:
-  #     - ./proxy/nginx:/etc/nginx:ro
-  #     - /etc/letsencrypt:/etc/letsencrypt:ro
-  #     - /var/www/letsencrypt:/var/www/letsencrypt:ro
+volumes:
+  mongo-data-tdk:
