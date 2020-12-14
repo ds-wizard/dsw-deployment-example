@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.8.1
+    image: datastewardshipwizard/wizard-server:2.9.0
     restart: always
     hostname: dsw_server
     ports:
@@ -15,22 +15,16 @@ services:
       - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.8.0
+    image: datastewardshipwizard/wizard-client:2.9.0
     restart: always
     hostname: dsw_client
     ports:
       - 8080:80
     environment:
       API_URL: http://localhost:3000
-    # (i) If you want to adjust look&feel/branding
-    #volumes:  
-    #  - ./client/extras.scss:/src/scss/customizations/_extras.scss:ro
-    #  - ./client/overrides.scss:/src/scss/customizations/_overrides.scss:ro
-    #  - ./client/variables.scss:/src/scss/customizations/_variables.scss:ro
-    #  - ./client/assets:/usr/share/nginx/html/assets:ro
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.8.0
+    image: datastewardshipwizard/document-worker:2.9.0
     restart: always
     depends_on:
       - rabbitmq
@@ -64,6 +58,3 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-
-volumes:
-  mongo-data-tdk:
