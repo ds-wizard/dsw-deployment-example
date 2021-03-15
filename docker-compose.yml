@@ -2,9 +2,8 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.11.0
+    image: datastewardshipwizard/wizard-server:2.12.0
     restart: always
-    hostname: dsw_server
     ports:
       - 3000:3000
     depends_on:
@@ -15,16 +14,15 @@ services:
       - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.11.0
+    image: datastewardshipwizard/wizard-client:2.12.0
     restart: always
-    hostname: dsw_client
     ports:
       - 8080:80
     environment:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.11.0
+    image: datastewardshipwizard/document-worker:2.12.0
     restart: always
     depends_on:
       - rabbitmq
@@ -56,3 +54,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
+# volumes:
+#   mongo-data:
