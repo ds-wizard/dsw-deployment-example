@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw_server:
-    image: datastewardshipwizard/wizard-server:2.12.0
+    image: datastewardshipwizard/wizard-server:2.13.0
     restart: always
     ports:
       - 3000:3000
@@ -14,7 +14,7 @@ services:
       - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
 
   dsw_client:
-    image: datastewardshipwizard/wizard-client:2.12.0
+    image: datastewardshipwizard/wizard-client:2.13.1
     restart: always
     ports:
       - 8080:80
@@ -22,7 +22,7 @@ services:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.12.0
+    image: datastewardshipwizard/document-worker:2.13.0
     restart: always
     depends_on:
       - rabbitmq
