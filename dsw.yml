@@ -4,16 +4,13 @@ general:
   serviceToken: NlQSNbGvh7EtcpinGnHE9g91
 
 database:
-  host: mongo
-  databaseName: wizard
-  port: 27017
-  authEnabled: false
-  username:
-  password:
+  connectionString: postgresql://postgres:postgres@postgres:5432/engine-wizard
 
-messaging:
-  username: guest
-  password: guest
+s3:
+  url: http://minio:9000
+  username: minio
+  password: minioPassword
+  bucket: engine-wizard
 
 mail:
   enabled: false

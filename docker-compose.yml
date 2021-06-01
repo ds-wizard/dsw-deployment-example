@@ -1,20 +1,19 @@
 version: '3'
 services:
 
-  dsw_server:
-    image: datastewardshipwizard/wizard-server:2.14.0
+  dsw-server:
+    image: datastewardshipwizard/wizard-server:3.0.0
     restart: always
     ports:
       - 3000:3000
     depends_on:
-      - rabbitmq
-      - mongo
+      - postgres
+      - minio
     volumes:
-      - ./server/application.yml:/application/engine-wizard/config/application.yml:ro
-      - ./server/integration.yml:/application/engine-wizard/config/integration.yml:ro
+      - ./dsw.yml:/application/engine-wizard/config/application.yml:ro
 
-  dsw_client:
-    image: datastewardshipwizard/wizard-client:2.14.0
+  dsw-client:
+    image: datastewardshipwizard/wizard-client:3.0.0
     restart: always
     ports:
       - 8080:80
@@ -22,38 +21,47 @@ services:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:2.14.0
+    image: datastewardshipwizard/document-worker:3.0.0
     restart: always
     depends_on:
-      - rabbitmq
+      - postgres
+      - minio
+      - dsw-server
     volumes:
-      - ./docworker/config.yml:/app/config.yml:ro
+      - ./dsw.yml:/app/config.yml:ro
 
-  mongo:
-    image: mongo:4.2.3
+  postgres:
+    image: postgres:13.2
     restart: always
     # (!) Expose only for debugging locally or set-up authentication
     # ports:
-    #   - 127.0.0.1:27017:27017
-    # command: mongod --auth
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: admin
-    #   MONGO_INITDB_ROOT_PASSWORD: secure-password
-    # (!) Mount and backup for persistent data
-    # volumes:
-    #  - mongo-data:/data/db
-    # OR (not working with Windows)
-    #  - ./mongo:/data/db
-
-  rabbitmq:
-    image: rabbitmq:3.8.2-management
-    restart: always
-    # (!) Expose only for debugging locally or set-up authentication
-    # ports:
-    #   - 127.0.0.1:15672:15672
+    #   - 127.0.0.1:15432:5432
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      POSTGRES_DB: engine-wizard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    # (!) Mount for persistent data
+    # volumes:
+    #  - db-data:/data/db
+    # OR
+    #  - ./db-data/data:/data/db
+
+  minio:
+    image: minio/minio:RELEASE.2021-05-27T22-06-31Z
+    command: server /data
+    # (!) Expose only for debugging locally or set-up authentication
+    # ports:
+    #   - 127.0.0.1:19000:9000
+    # (!) Mount and backup for persistent data
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minioPassword
+    # (!) Mount for persistent data
+    # volumes:
+    #  - s3-data:/data
+    # OR
+    #  - ./s3-data/data:/data
 
 # volumes:
-#   mongo-data:
+#   db-data:
+#   s3-data:
