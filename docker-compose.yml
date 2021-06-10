@@ -47,7 +47,7 @@ services:
     #  - ./db-data/data:/data/db
 
   minio:
-    image: minio/minio:RELEASE.2021-05-27T22-06-31Z
+    image: minio/minio:RELEASE.2021-04-22T15-44-28Z
     command: server /data
     # (!) Expose only for debugging locally or set-up authentication
     # ports:
