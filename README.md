@@ -19,5 +19,5 @@ For information on how to use Data Stewardship Wizard, visit our [guide](https:/
 ## Important notes
 
 * Do not expose PostgreSQL and Minio to the internet
-* When you want to use DSW publicly, set up proxy with a certificate for your domain and change default accounts
+* When you want to use DSW publicly, set up proxy (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Minio containers for persistent data
