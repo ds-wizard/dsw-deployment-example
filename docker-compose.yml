@@ -21,7 +21,7 @@ services:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:3.6.0
+    image: datastewardshipwizard/document-worker:3.6.1
     restart: always
     depends_on:
       - postgres
