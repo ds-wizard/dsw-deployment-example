@@ -21,3 +21,4 @@ For information on how to use Data Stewardship Wizard, visit our [guide](https:/
 * Do not expose PostgreSQL and Minio to the internet
 * When you want to use DSW publicly, set up proxy (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Minio containers for persistent data
+* You have to create S3 bucket, either using Web UI (for Minio, you can expose and use `http://localhost:19000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb
