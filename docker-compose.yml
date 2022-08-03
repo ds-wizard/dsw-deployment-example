@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw-server:
-    image: datastewardshipwizard/wizard-server:3.13
+    image: datastewardshipwizard/wizard-server:3.14
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
@@ -14,7 +14,7 @@ services:
       - ./dsw.yml:/application/engine-wizard/config/application.yml:ro
 
   dsw-client:
-    image: datastewardshipwizard/wizard-client:3.13
+    image: datastewardshipwizard/wizard-client:3.14
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
@@ -23,7 +23,7 @@ services:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:3.13
+    image: datastewardshipwizard/document-worker:3.14
     restart: always
     depends_on:
       - postgres
@@ -33,7 +33,7 @@ services:
       - ./dsw.yml:/app/config.yml:ro
 
   mailer:
-    image: datastewardshipwizard/mailer:3.13
+    image: datastewardshipwizard/mailer:3.14
     restart: always
     depends_on:
       - postgres
@@ -42,7 +42,7 @@ services:
       - ./dsw.yml:/app/config.yml:ro
 
   postgres:
-    image: postgres:13.6
+    image: postgres:13.7
     restart: always
     # (!) Expose only for debugging locally or set-up authentication
     ports:
@@ -58,7 +58,7 @@ services:
     #  - ./db-data/data:/var/lib/postgresql/data
 
   minio:
-    image: minio/minio:RELEASE.2022-02-24T22-12-01Z
+    image: minio/minio:RELEASE.2022-08-02T23-59-16Z
     command: server /data --console-address ":9001"
     # (!) Expose only for debugging locally or set-up authentication
     ports:
