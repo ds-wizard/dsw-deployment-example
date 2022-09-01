@@ -22,3 +22,7 @@ For information on how to use Data Stewardship Wizard, visit our [guide](https:/
 * When you want to use DSW publicly, set up proxy (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Minio containers for persistent data
 * You have to create S3 bucket, either using Web UI (for Minio, you can expose and use `http://localhost:9000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb, e.g. use `create-bucket.sh` script.
+
+## Security Audit
+
+This repository is used to regularly check vulnerabilities in the latest release of Docker images. [Grype](https://github.com/anchore/grype) tool is used (see [security-audit.yml](.github/workflows/security-audit.yml) file and related GitHub Actions runs). Once a vulnerability is detected, we are notified and start working on a new hotfix version. You should **always use the latest version** you can find used in this repository.

@@ -1,0 +1,58 @@
+name: "Security Audit"
+
+on:
+  push:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+
+  grype:
+    name: Grype
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - datastewardshipwizard/wizard-server:3.15.1
+          - datastewardshipwizard/wizard-client:3.15.2
+          - datastewardshipwizard/document-worker:3.15.3
+          - datastewardshipwizard/mailer:3.15.3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin
+
+      - name: Check Grype
+        run: |
+          grype version
+
+      - name: Run Grype
+        run: |
+          grype ${{ matrix.image }} | tee result.txt
+      
+      - name: Check critical vulnerabilities
+        run: |
+          CRITICALS=$(cat result.txt | grep "Critical" | wc -l | tr -s " ")
+          if [ "$CRITICALS" -gt "0" ]; then
+            echo "There are critical vulnerabilities: $CRITICALS (image: $IMAGE)"
+            echo "--------------------------------------------------------------------------------"
+            cat result.txt | grep "Critical"
+            echo "--------------------------------------------------------------------------------"
+            echo "Sending Slack notification..."
+            ./.github/scripts/slack-notify.sh "$WEBHOOK_URL" "$IMAGE" "$CRITICALS" "$REPO" "$RUN"
+            exit 1
+          else
+            echo "There are no citical vulnerabilities for image: $IMAGE"
+            echo "Well done!"
+          fi
+        env:
+          IMAGE: ${{ matrix.image }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          RUN: ${{ github.run_id }}
