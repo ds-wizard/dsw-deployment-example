@@ -59,6 +59,7 @@ services:
 
   minio:
     image: minio/minio:RELEASE.2022-08-02T23-59-16Z
+    restart: always
     command: server /data --console-address ":9001"
     # (!) Expose only for debugging locally or set-up authentication
     ports:
