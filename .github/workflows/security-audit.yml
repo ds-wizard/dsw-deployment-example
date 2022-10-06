@@ -15,10 +15,10 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - datastewardshipwizard/wizard-server:3.15.1
-          - datastewardshipwizard/wizard-client:3.15.2
-          - datastewardshipwizard/document-worker:3.15.3
-          - datastewardshipwizard/mailer:3.15.3
+          - datastewardshipwizard/wizard-server:3.16.0
+          - datastewardshipwizard/wizard-client:3.16.0
+          - datastewardshipwizard/document-worker:3.16.0
+          - datastewardshipwizard/mailer:3.16.0
 
     steps:
       - name: Checkout repository
