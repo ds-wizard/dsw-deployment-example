@@ -1,7 +1,6 @@
 general:
   clientUrl: http://localhost:8080
   secret: b7zFNUhFYIFLmDSFKFkp0Bnp8Z3uWGnH
-  serviceToken: NlQSNbGvh7EtcpinGnHE9g91
 # !! Change the secrets if exposing the service
 
 database:
