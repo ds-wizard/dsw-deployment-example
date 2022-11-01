@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw-server:
-    image: datastewardshipwizard/wizard-server:3.16.3
+    image: datastewardshipwizard/wizard-server:3.17.0
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
@@ -14,7 +14,7 @@ services:
       - ./dsw.yml:/application/engine-wizard/config/application.yml:ro
 
   dsw-client:
-    image: datastewardshipwizard/wizard-client:3.16.0
+    image: datastewardshipwizard/wizard-client:3.17.0
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
@@ -23,7 +23,7 @@ services:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:3.16.0
+    image: datastewardshipwizard/document-worker:3.17.0
     restart: always
     depends_on:
       - postgres
@@ -33,7 +33,7 @@ services:
       - ./dsw.yml:/app/config.yml:ro
 
   mailer:
-    image: datastewardshipwizard/mailer:3.16.0
+    image: datastewardshipwizard/mailer:3.17.0
     restart: always
     depends_on:
       - postgres
