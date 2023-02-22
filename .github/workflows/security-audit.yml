@@ -16,7 +16,7 @@ jobs:
       matrix:
         image:
           - datastewardshipwizard/wizard-server:3.20.0
-          - datastewardshipwizard/wizard-client:3.20.2
+          - datastewardshipwizard/wizard-client:3.20.3
           - datastewardshipwizard/document-worker:3.20.2
           - datastewardshipwizard/mailer:3.20.2
 

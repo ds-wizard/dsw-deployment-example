@@ -14,7 +14,7 @@ services:
       - ./dsw.yml:/application/engine-wizard/config/application.yml:ro
 
   dsw-client:
-    image: datastewardshipwizard/wizard-client:3.20.2
+    image: datastewardshipwizard/wizard-client:3.20.3
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
