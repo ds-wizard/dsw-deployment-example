@@ -7,7 +7,7 @@ database:
   connectionString: postgresql://postgres:postgres@postgres:5432/engine-wizard
 
 s3:
-  url: http://minio:9000
+  url: http://host.docker.internal:9000
   username: minio
   password: minioPassword
   bucket: engine-wizard

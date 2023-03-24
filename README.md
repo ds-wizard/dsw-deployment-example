@@ -20,16 +20,14 @@ $ docker-compose up -d
 
 Then visit [localhost:8080](http://localhost:8080) and login as `albert.einstein@example.com` with password `password`.
 
-We recommend reading the [Installation](https://docs.ds-wizard.org/en/latest/admin/installation.html) and [Configuration](https://docs.ds-wizard.org/en/latest/admin/configuration.html) chapters in the documentation. After starting the DSW, you can log in using [Default User Accounts](https://docs.ds-wizard.org/en/latest/admin/installation.html#default-users). The fresh installation does not contain any knowledge model, you can read about how to get the [Initial Knowledge Model](https://docs.ds-wizard.org/en/latest/admin/installation.html#initial-knowledge-model).
-
 For information on how to use Data Stewardship Wizard, visit our [guide](https://guide.ds-wizard.org).
 
 ## Important notes
 
-* Do not expose PostgreSQL and Minio to the internet
+* Do not expose PostgreSQL and MinIO to the internet
 * When you want to use DSW publicly, set up proxy (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Minio containers for persistent data
-* You have to create S3 bucket, either using Web UI (for Minio, you can expose and use `http://localhost:9000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb, e.g. use `create-bucket.sh` script.
+* You have to create S3 bucket, either using Web UI (for Minio, you can expose and use `http://localhost:9000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb, e.g. use `create-bucket.sh` script
 
 ## Security Audit
 

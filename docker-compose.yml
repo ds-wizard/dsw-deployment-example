@@ -12,6 +12,8 @@ services:
       - minio
     volumes:
       - ./dsw.yml:/application/engine-wizard/config/application.yml:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   dsw-client:
     image: datastewardshipwizard/wizard-client:3.21.0
@@ -31,6 +33,8 @@ services:
       - dsw-server
     volumes:
       - ./dsw.yml:/app/config.yml:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   mailer:
     image: datastewardshipwizard/mailer:3.21.0
@@ -46,7 +50,7 @@ services:
     restart: always
     # (!) Expose only for debugging locally or set-up authentication
     ports:
-      - 127.0.0.1:15432:5432
+      - 5432:5432
     environment:
       POSTGRES_DB: engine-wizard
       POSTGRES_USER: postgres
@@ -63,8 +67,8 @@ services:
     command: server /data --console-address ":9001"
     # (!) Expose only for debugging locally or set-up authentication
     ports:
-      - 127.0.0.1:9000:9000
-      - 127.0.0.1:9001:9001
+      - 9000:9000
+      - 9001:9001
     # (!) Mount and backup for persistent data
     environment:
       MINIO_ROOT_USER: minio
