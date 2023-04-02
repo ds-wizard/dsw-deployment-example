@@ -25,6 +25,10 @@ jobs:
           registry: ${{ secrets.PRIVATE_REGISTRY_URL }}
           username: ${{ secrets.PRIVATE_REGISTRY_USERNAME }}
           password: ${{ secrets.PRIVATE_REGISTRY_PASSWORD }}
+          
+      - name: Pull Docker Image
+        run: |
+          docker pull ${{ inputs.image }}
 
       - name: Install Grype
         run: |
@@ -36,7 +40,7 @@ jobs:
 
       - name: Run Grype
         run: |
-          grype ${{ matrix.image }} | tee result.txt
+          grype ${{ inputs.image }} | tee result.txt
       
       - name: Check critical vulnerabilities
         run: |
