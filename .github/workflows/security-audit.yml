@@ -21,8 +21,8 @@ jobs:
           - datastewardshipwizard/document-worker:3.21.0
           - datastewardshipwizard/mailer:3.21.0
           # Latest
-          - datastewardshipwizard/wizard-server:3.22.0
-          - datastewardshipwizard/wizard-client:3.22.0
+          - datastewardshipwizard/wizard-server:3.22.1
+          - datastewardshipwizard/wizard-client:3.22.1
           - datastewardshipwizard/document-worker:3.22.0
           - datastewardshipwizard/mailer:3.22.0
 
