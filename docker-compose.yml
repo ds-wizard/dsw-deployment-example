@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw-server:
-    image: datastewardshipwizard/wizard-server:3.22.2
+    image: datastewardshipwizard/wizard-server:3.22.3
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
