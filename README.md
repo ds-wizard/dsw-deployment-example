@@ -28,6 +28,7 @@ For information on how to use Data Stewardship Wizard, visit our [guide](https:/
 * When you want to use DSW publicly, set up proxy (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Minio containers for persistent data
 * You have to create S3 bucket, either using Web UI (for Minio, you can expose and use `http://localhost:9000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb, e.g. use `create-bucket.sh` script
+* Change the secrets in `config/application.yml` (32 character string in `general.secret` and RSA private key in `general.rsaPrivateKey` via `ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key`)
 
 ## Security Audit
 

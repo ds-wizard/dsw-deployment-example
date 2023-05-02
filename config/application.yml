@@ -1,0 +1,77 @@
+# !! Change the secrets to your own
+general:
+  clientUrl: http://localhost:8080
+  secret: b7zFNUhFYIFLmDSFKFkp0Bnp8Z3uWGnH
+  rsaPrivateKey: |
+    -----BEGIN RSA PRIVATE KEY-----
+    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
+    ZL+vlGCNRc23M26FTCnn8QmfvjVMEWpIt7t9hcKmEbblefXwZHvtMH2yAppSCkUS
+    KsLUK6D9h3RMkPKqV22Jc4CtXOLtlHNxQObAkVXJQntVKfQ5q3HoLE6S5q0m09ce
+    o2NdAoIBAEVbflpP+Pk8gsCuD63F8l7hJqaIF+Aj5oQPSuaZ4LYlDtVLIT726YtF
+    8cTOPFdWB/N5kbLF1Xd6gBY4jqr0ZrrApU+5QrX6JzrjR2xgkTXekxmdFTFXUKPH
+    i7fExtPjSyN4i0Y/WvB9+c22yijnU2Z4xszmvYY1s1KrcVnSo0VuQSgJRvz91PFl
+    rwywqe8p5wwGLvfLGw9qa1VcecleFG+cqbbQUluqyE3tZj6CsOTjWVRFa7/s0YMO
+    DHj+Nmm8btl7XctNmchYwK1pfz+Iq8nevwyQjBIZaap99+VbZvGaInJ0X6gaqqss
+    mDDAkNV919kq2CXLePmYHmmnh0Tu3JMCggEBAL1wmSfX55tVCQRSVl7ahNpqGY7C
+    7Syyd0z8vE3F+czsd8H0j5KGBgKSUbtiJDhB1BSLcIwaUczJFiFXpegkTXnSz1Id
+    2H+riQDon8rVkdP8JP6ny5ncj4PQ5ZAE7gwMPdtjhY4WChfHMXGgyfubNKIGi0pP
+    U8QopElb2l9/YhTpSvXXHXLYAq8bz3Kye6jQqatoDwRCuHkPc0OUeT9NdtW+x/Y4
+    cdU04pDO6DEYKYcD8vgSlEzVCNqb6TvFfRsfQXI5TSkKuX3fTR2wgLR6CxWIejSE
+    32jnWA89Tg9wD6ACZo8On4IIVH4oeFuNi8mSb/M3pQ9hTtqIUqwUw+AxD+I=
+    -----END RSA PRIVATE KEY-----
+
+
+database:
+  connectionString: postgresql://postgres:postgres@postgres:5432/engine-wizard
+
+s3:
+  url: http://host.docker.internal:9000
+  username: minio
+  password: minioPassword
+  bucket: engine-wizard
+
+mail:
+  enabled: false
+  name:
+  email:
+  host:
+  port:
+  ssl:
+  authEnabled:
+  username:
+  password:

@@ -2,7 +2,7 @@ version: '3'
 services:
 
   dsw-server:
-    image: datastewardshipwizard/wizard-server:3.22.3
+    image: datastewardshipwizard/wizard-server:3.23.0
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
@@ -11,12 +11,12 @@ services:
       - postgres
       - minio
     volumes:
-      - ./dsw.yml:/application/engine-wizard/config/application.yml:ro
+      - ./config/application.yml:/app/config/application.yml:ro
     extra_hosts:
       - host.docker.internal:host-gateway
 
   dsw-client:
-    image: datastewardshipwizard/wizard-client:3.22.1
+    image: datastewardshipwizard/wizard-client:3.23.0
     restart: always
     ports:
     # (!) Expose only for local deployment, externally use HTTPS proxy
@@ -25,25 +25,25 @@ services:
       API_URL: http://localhost:3000
 
   docworker:
-    image: datastewardshipwizard/document-worker:3.22.1
+    image: datastewardshipwizard/document-worker:3.23.0
     restart: always
     depends_on:
       - postgres
       - minio
       - dsw-server
     volumes:
-      - ./dsw.yml:/app/config.yml:ro
+      - ./config/application.yml:/app/config/application.yml:ro
     extra_hosts:
       - host.docker.internal:host-gateway
 
   mailer:
-    image: datastewardshipwizard/mailer:3.22.1
+    image: datastewardshipwizard/mailer:3.23.0
     restart: always
     depends_on:
       - postgres
       - dsw-server
     volumes:
-      - ./dsw.yml:/app/config.yml:ro
+      - ./config/application.yml:/app/config/application.yml:ro
 
   postgres:
     image: postgres:15.2
