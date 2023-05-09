@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# (!!) Change default password
 MINIO_NET="dsw-deployment-example_default"
 MINIO_BUCKET="engine-wizard"
 MINIO_USER="minio"

@@ -1,4 +1,4 @@
-# !! Change the secrets to your own
+# (!!) Change the secret and RDA private key to your own
 general:
   clientUrl: http://localhost:8080
   secret: b7zFNUhFYIFLmDSFKFkp0Bnp8Z3uWGnH
@@ -55,10 +55,11 @@ general:
     32jnWA89Tg9wD6ACZo8On4IIVH4oeFuNi8mSb/M3pQ9hTtqIUqwUw+AxD+I=
     -----END RSA PRIVATE KEY-----
 
-
+# (!!) Change default password
 database:
   connectionString: postgresql://postgres:postgres@postgres:5432/engine-wizard
 
+# (!!) Change default password
 s3:
   url: http://host.docker.internal:9000
   username: minio
