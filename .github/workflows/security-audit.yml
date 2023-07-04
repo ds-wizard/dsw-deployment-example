@@ -21,10 +21,10 @@ jobs:
           - datastewardshipwizard/document-worker:3.23.0
           - datastewardshipwizard/mailer:3.23.0
           # Latest
-          - datastewardshipwizard/wizard-server:3.24.0
-          - datastewardshipwizard/wizard-client:3.24.0
-          - datastewardshipwizard/document-worker:3.24.0
-          - datastewardshipwizard/mailer:3.24.0
+          - datastewardshipwizard/wizard-server:3.25.0
+          - datastewardshipwizard/wizard-client:3.25.0
+          - datastewardshipwizard/document-worker:3.25.0
+          - datastewardshipwizard/mailer:3.25.0
 
     steps:
       - name: Checkout repository
