@@ -16,15 +16,15 @@ jobs:
       matrix:
         image:
           # Maintained
-          - datastewardshipwizard/wizard-server:3.23.2
-          - datastewardshipwizard/wizard-client:3.23.0
-          - datastewardshipwizard/document-worker:3.23.0
-          - datastewardshipwizard/mailer:3.23.0
+          - datastewardshipwizard/wizard-server:3.25
+          - datastewardshipwizard/wizard-client:3.25
+          - datastewardshipwizard/document-worker:3.25
+          - datastewardshipwizard/mailer:3.25
           # Latest
-          - datastewardshipwizard/wizard-server:3.25.0
-          - datastewardshipwizard/wizard-client:3.25.0
-          - datastewardshipwizard/document-worker:3.25.0
-          - datastewardshipwizard/mailer:3.25.0
+          - datastewardshipwizard/wizard-server:3.26
+          - datastewardshipwizard/wizard-client:3.26
+          - datastewardshipwizard/document-worker:3.26
+          - datastewardshipwizard/mailer:3.26
 
     steps:
       - name: Checkout repository

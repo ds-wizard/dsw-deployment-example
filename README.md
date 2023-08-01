@@ -24,6 +24,7 @@ For information on how to use Data Stewardship Wizard, visit our [guide](https:/
 
 ## Important notes
 
+* Use `docker compose pull` to get newest image (hotfixes) before starting
 * **Do not expose** PostgreSQL and MinIO to the internet (MinIO should be exposed only via proxy)
 * When you want to use DSW publicly, **set up HTTPS proxy** (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and MinIO containers for persistent data
