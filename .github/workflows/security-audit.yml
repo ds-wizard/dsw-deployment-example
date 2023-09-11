@@ -15,6 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         image:
+          # Develop
+          - dswbot/wizard-server:develop
+          - dswbot/wizard-client:develop
+          - dswbot/document-worker:develop
+          - dswbot/mailer:develop
           # Maintained
           - datastewardshipwizard/wizard-server:3.26
           - datastewardshipwizard/wizard-client:3.26
@@ -50,15 +55,19 @@ jobs:
             echo "--------------------------------------------------------------------------------"
             cat result.txt | grep "Critical"
             echo "--------------------------------------------------------------------------------"
-            echo "Sending Slack notification..."
-            ./.github/scripts/slack-notify.sh "$WEBHOOK_URL" "$IMAGE" "$CRITICALS" "$REPO" "$RUN"
+            echo "Sending notification..."
+            ./.github/scripts/discord-notify-error.sh "$DISCORD_ERROR_WEBHOOK_URL" "$IMAGE" "$CRITICALS" "$REPO" "$RUN"
+            ./.github/scripts/discord-notify-error.sh "$DISCORD_INFO_WEBHOOK_URL" "$IMAGE" "$CRITICALS" "$REPO" "$RUN"
             exit 1
           else
             echo "There are no citical vulnerabilities for image: $IMAGE"
+            echo "Sending notification..."
+            ./.github/scripts/discord-notify-info.sh "$DISCORD_INFO_WEBHOOK_URL" "$IMAGE" "$REPO" "$RUN"
             echo "Well done!"
           fi
         env:
           IMAGE: ${{ matrix.image }}
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          DISCORD_ERROR_WEBHOOK_URL: ${{ secrets.DISCORD_ERROR_WEBHOOK_URL }}
+          DISCORD_INFO_WEBHOOK_URL: ${{ secrets.DISCORD_INFO_WEBHOOK_URL }}
           REPO: ${{ github.repository }}
           RUN: ${{ github.run_id }}
