@@ -1,7 +1,0 @@
-fairsharing:
-  apiUrl: https://fairsharing4dsw.ds-wizard.org/legacy
-  apiKey: "ZHN3LWJvdDo5T3QyaTRHempFYjFtbmg5S1ZqWlM3VWRBOW5S"
-biotools:
-  apiUrl: https://bio.tools/api
-tess:
-  apiUrl: https://tess.elixir-europe.org
