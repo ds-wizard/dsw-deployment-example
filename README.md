@@ -17,7 +17,7 @@ This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard
 $ docker-compose up -d
 ```
 
-Then visit [localhost:8080](http://localhost:8080) and login as `albert.einstein@example.com` with password `password`.
+Then visit [localhost:8080/wizard](http://localhost:8080/wizard/) and login as `albert.einstein@example.com` with password `password`.
 
 For information on how to use Data Stewardship Wizard, visit our [guide](https://guide.ds-wizard.org).
 

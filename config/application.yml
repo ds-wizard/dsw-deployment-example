@@ -66,6 +66,7 @@ s3:
   password: minioPassword
   bucket: engine-wizard
 
+# (!!) Configure SMTP
 mail:
   enabled: false
   name:
