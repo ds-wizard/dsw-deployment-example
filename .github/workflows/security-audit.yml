@@ -21,15 +21,15 @@ jobs:
           - dswbot/document-worker:develop
           - dswbot/mailer:develop
           # Maintained
-          - datastewardshipwizard/wizard-server:4.3
-          - datastewardshipwizard/wizard-client:4.3
-          - datastewardshipwizard/document-worker:4.3
-          - datastewardshipwizard/mailer:4.3
-          # Latest
           - datastewardshipwizard/wizard-server:4.4
           - datastewardshipwizard/wizard-client:4.4
           - datastewardshipwizard/document-worker:4.4
           - datastewardshipwizard/mailer:4.4
+          # Latest
+          - datastewardshipwizard/wizard-server:4.5
+          - datastewardshipwizard/wizard-client:4.5
+          - datastewardshipwizard/document-worker:4.5
+          - datastewardshipwizard/mailer:4.5
 
     steps:
       - name: Checkout repository
