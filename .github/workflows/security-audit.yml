@@ -21,15 +21,15 @@ jobs:
           - dswbot/document-worker:develop
           - dswbot/mailer:develop
           # Maintained
-          - datastewardshipwizard/wizard-server:4.4
-          - datastewardshipwizard/wizard-client:4.4
-          - datastewardshipwizard/document-worker:4.4
-          - datastewardshipwizard/mailer:4.4
-          # Latest
           - datastewardshipwizard/wizard-server:4.5
           - datastewardshipwizard/wizard-client:4.5
           - datastewardshipwizard/document-worker:4.5
           - datastewardshipwizard/mailer:4.5
+          # Latest
+          - datastewardshipwizard/wizard-server:4.6
+          - datastewardshipwizard/wizard-client:4.6
+          - datastewardshipwizard/document-worker:4.6
+          - datastewardshipwizard/mailer:4.6
 
     steps:
       - name: Checkout repository
@@ -60,7 +60,7 @@ jobs:
             ./.github/scripts/discord-notify-error.sh "$DISCORD_INFO_WEBHOOK_URL" "$IMAGE" "$CRITICALS" "$REPO" "$RUN"
             exit 1
           else
-            echo "There are no citical vulnerabilities for image: $IMAGE"
+            echo "There are no critical vulnerabilities for image: $IMAGE"
             echo "Sending notification..."
             ./.github/scripts/discord-notify-info.sh "$DISCORD_INFO_WEBHOOK_URL" "$IMAGE" "$REPO" "$RUN"
             echo "Well done!"
