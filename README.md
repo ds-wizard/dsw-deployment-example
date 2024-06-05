@@ -4,7 +4,7 @@
 
 If you use or plan to use DSW, please let us know via [info@ds-wizard.org](mailto:info@ds-wizard.org) to:
 
-- Join our [**Discord** server](https://discord.gg/MW3H9tdMcT), where you can be notified about importat updates and releases + we can discuss your issues and ideas.
+- Join our [**Discord** server](https://discord.gg/MW3H9tdMcT), where you can be notified about important updates and releases + we can discuss your issues and ideas.
 - Provide us feedback (what is good and bad, [feature requests](https://ideas.ds-wizard.org/), etc.)
 
 This example is intended for **local setup and testing**. For production use there are many more things to do such as authentication, controlling exposed ports (e.g. do not expose ports of `postgres` and `minio`), data backups, or using proxy (with HTTPS and WebSocket enabled). As it is highly dependent on your use case, consult production deployment with your sysadmin or [contact us](https://ds-wizard.org/contact).
