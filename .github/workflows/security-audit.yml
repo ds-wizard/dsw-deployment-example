@@ -21,19 +21,19 @@ jobs:
           - dswbot/document-worker:develop
           - dswbot/mailer:develop
           # Maintained
-          - datastewardshipwizard/wizard-server:4.13
-          - datastewardshipwizard/wizard-client:4.13
-          - datastewardshipwizard/document-worker:4.13
-          - datastewardshipwizard/mailer:4.13
-          # Latest
           - datastewardshipwizard/wizard-server:4.14
           - datastewardshipwizard/wizard-client:4.14
           - datastewardshipwizard/document-worker:4.14
           - datastewardshipwizard/mailer:4.14
+          # Latest
+          - datastewardshipwizard/wizard-server:4.15
+          - datastewardshipwizard/wizard-client:4.15
+          - datastewardshipwizard/document-worker:4.15
+          - datastewardshipwizard/mailer:4.15
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Grype
         run: |
