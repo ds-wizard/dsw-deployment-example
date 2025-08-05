@@ -1,7 +1,7 @@
 services:
 
   dsw-server:
-    image: datastewardshipwizard/wizard-server:4.20
+    image: datastewardshipwizard/wizard-server:4.21.0
     platform: linux/amd64
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
       - host.docker.internal:host-gateway
 
   dsw-client:
-    image: datastewardshipwizard/wizard-client:4.20
+    image: datastewardshipwizard/wizard-client:4.21.0
     restart: always
     ports:
     # (!!) Expose only for local deployment, externally use HTTPS proxy
@@ -25,7 +25,7 @@ services:
       API_URL: http://localhost:3000/wizard-api
 
   docworker:
-    image: datastewardshipwizard/document-worker:4.20
+    image: datastewardshipwizard/document-worker:4.21.0
     restart: always
     depends_on:
       - postgres
@@ -37,7 +37,7 @@ services:
       - host.docker.internal:host-gateway
 
   mailer:
-    image: datastewardshipwizard/mailer:4.20
+    image: datastewardshipwizard/mailer:4.21.0
     restart: always
     depends_on:
       - postgres
