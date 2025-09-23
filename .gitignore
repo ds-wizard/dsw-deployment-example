@@ -1,2 +1,3 @@
 db-data/data
 s3-data/data
+.env

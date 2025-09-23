@@ -1,7 +1,7 @@
 services:
 
-  dsw-server:
-    image: datastewardshipwizard/wizard-server:4.22
+  server:
+    image: datastewardshipwizard/wizard-server:${DSW_VERSION}
     platform: linux/amd64
     restart: always
     ports:
@@ -15,8 +15,8 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  dsw-client:
-    image: datastewardshipwizard/wizard-client:4.22
+  client:
+    image: datastewardshipwizard/wizard-client:${DSW_VERSION}
     restart: always
     ports:
     # (!!) Expose only for local deployment, externally use HTTPS proxy
@@ -25,32 +25,32 @@ services:
       API_URL: http://localhost:3000/wizard-api
 
   docworker:
-    image: datastewardshipwizard/document-worker:4.22
+    image: datastewardshipwizard/document-worker:${DSW_VERSION}
     restart: always
     depends_on:
       - postgres
       - minio
-      - dsw-server
+      - server
     volumes:
       - ./config/application.yml:/app/config/application.yml:ro
     extra_hosts:
       - host.docker.internal:host-gateway
 
   mailer:
-    image: datastewardshipwizard/mailer:4.22
+    image: datastewardshipwizard/mailer:${DSW_VERSION}
     restart: always
     depends_on:
       - postgres
-      - dsw-server
+      - server
     volumes:
       - ./config/application.yml:/app/config/application.yml:ro
 
   postgres:
-    image: postgres:15.6
+    image: postgres:${POSTGRES_VERSION}
     restart: always
     # (!!) Expose only for debugging locally
-    # ports:
-    #   - 127.0.0.1:5432:5432
+    ports:
+      - 127.0.0.1:5432:5432
     # (!!) Change default password
     environment:
       POSTGRES_DB: engine-wizard
@@ -58,12 +58,12 @@ services:
       POSTGRES_PASSWORD: postgres
     # (!!) Mount for persistent data
     # volumes:
-    #  - db-data:/var/lib/postgresql/data
+    #   - db-data:/var/lib/postgresql/data
     # OR
-    #  - ./db-data/data:/var/lib/postgresql/data
+    #   - ./db-data/data:/var/lib/postgresql/data
 
   minio:
-    image: minio/minio:RELEASE.2022-02-24T22-12-01Z
+    image: minio/minio:${MINIO_VERSION}
     restart: always
     command: server /data --console-address ":9001"
     # (!!) Expose only for debugging locally, externally use HTTPS proxy (see MinIO docs)
@@ -74,11 +74,12 @@ services:
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minioPassword
+      MINIO_VOLUMES: /data
     # (!!) Mount and backup for persistent data
     # volumes:
-    #  - s3-data:/data
+    #   - s3-data:/data
     # OR
-    #  - ./s3-data/data:/data
+    #   - ./s3-data/data:/data
 
 # volumes:
 #   db-data:

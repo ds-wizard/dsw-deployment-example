@@ -69,11 +69,12 @@ s3:
 # (!!) Configure SMTP
 mail:
   enabled: false
-  name:
+  name: 
   email:
-  host:
-  port:
-  ssl:
-  authEnabled:
-  username:
-  password:
+  provider: smtp
+  smtp:
+    host:
+    port:
+    security: plain # plain | ssl | starttls
+    username:
+    password:

@@ -11,7 +11,7 @@ This example is intended for **local setup and testing**. For production use the
 
 ## Usage
 
-This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [docker-compose](https://docs.docker.com/compose/). You can clone the repository and run it with:
+This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [docker-compose](https://docs.docker.com/compose/). You can clone the repository, create `.env` file using `example.env` and run it with:
 
 ```
 $ docker-compose up -d
