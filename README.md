@@ -15,7 +15,7 @@ This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard
 
 It is intentionally set up as a **single-node local POC**:
 
-- Garage runs in Docker on `127.0.0.1:9000`
+- Garage runs in Docker on host ports `9000` (S3 API) and `9003` (Admin API)
 - DSW points to `http://host.docker.internal:9000` so presigned URLs are reachable from the browser
 - `create-bucket.sh` performs the one-time Garage bootstrap for this example
 
@@ -94,11 +94,11 @@ If these checks pass, Garage is functioning as a drop-in S3-compatible backend f
 ## Important Notes
 
 * Use `docker compose pull` to get newest image (hotfixes) before starting
-* **Do not expose** PostgreSQL and Garage to the internet (Garage should be exposed only via proxy in public deployments)
+* **Do not expose** PostgreSQL and Garage to the internet in a public deployment (Garage should be behind your proxy, firewall, or private network setup)
 * When you want to use DSW publicly, **set up HTTPS proxy** (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Garage containers for persistent data
 * Garage needs a one-time bootstrap after the stack starts. `create-bucket.sh` assigns the single-node layout, creates the bucket, imports the configured S3 key, and grants bucket permissions
-* DSW uses `http://host.docker.internal:9000` as the S3 endpoint so that presigned URLs returned by DSW are reachable from your browser in this local setup
+* DSW uses `http://host.docker.internal:9000` as the S3 endpoint so both the DSW containers and the browser can reach the same local Garage endpoint
 * Always use **strong passwords** and never use default values, **change the secrets** in `config/application.yml` and `.env` (JWT secret, RSA private key, Garage RPC/admin tokens, and S3 credentials)
 
 ## Troubleshooting

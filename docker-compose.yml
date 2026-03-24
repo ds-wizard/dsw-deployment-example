@@ -67,9 +67,9 @@ services:
       - 127.0.0.1:5432:5432
     # Change defaults before using this outside a local POC.
     environment:
-      POSTGRES_DB: engine-wizard
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     # Uncomment one option below to persist PostgreSQL data locally.
     # volumes:
     #   - db-data:/var/lib/postgresql/data
@@ -79,10 +79,11 @@ services:
   garage:
     image: dxflrs/garage:${GARAGE_VERSION}
     restart: always
-    # Keep the S3 and Admin APIs bound to localhost in this local POC.
+    # Publish Garage on the host so both containers and the browser can reach the same endpoint.
+    # Do not expose this directly in a public deployment.
     ports:
-      - 127.0.0.1:9000:3900
-      - 127.0.0.1:9003:3903
+      - 9000:3900
+      - 9003:3903
     # Change these defaults before sharing or reusing this setup.
     environment:
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
