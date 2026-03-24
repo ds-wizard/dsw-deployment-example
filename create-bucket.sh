@@ -21,7 +21,7 @@ garage_exec() {
   docker compose exec -T "$GARAGE_SERVICE" /garage "$@"
 }
 
-if ! docker compose ps --status running "$GARAGE_SERVICE" >/dev/null 2>&1; then
+if [ -z "$(docker compose ps -q --status running "$GARAGE_SERVICE" 2>/dev/null)" ]; then
   echo "Garage service '$GARAGE_SERVICE' is not running. Start the stack first with: docker compose up -d" >&2
   exit 1
 fi
