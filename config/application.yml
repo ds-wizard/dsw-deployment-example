@@ -59,12 +59,14 @@ general:
 database:
   connectionString: postgresql://postgres:postgres@postgres:5432/engine-wizard
 
-# (!!) Change default password
+# (!!) Change default credentials
 s3:
+  # Use a host-reachable endpoint so browser-facing presigned URLs work in local Docker.
   url: http://host.docker.internal:9000
-  username: minio
-  password: minioPassword
+  username: GK0123456789abcdef01234567
+  password: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
   bucket: engine-wizard
+  region: garage
 
 # (!!) Configure SMTP
 mail:

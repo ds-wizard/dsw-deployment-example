@@ -1,3 +1,5 @@
 db-data/data
 s3-data/data
+garage-data/meta
+garage-data/data
 .env

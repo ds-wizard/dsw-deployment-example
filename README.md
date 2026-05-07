@@ -7,28 +7,117 @@ If you use or plan to use DSW, please let us know via [info@ds-wizard.org](mailt
 - Join our [**Discord** server](https://discord.gg/MW3H9tdMcT), where you can be notified about important updates and releases + we can discuss your issues and ideas.
 - Provide us feedback (what is good and bad, [feature requests](https://ideas.ds-wizard.org/), etc.)
 
-This example is intended for **local setup and testing**. For production use there are many more things to do such as authentication, controlling exposed ports (e.g. do not expose ports of `postgres` and `minio`), data backups, or using proxy (with HTTPS and WebSocket enabled). As it is highly dependent on your use case, consult production deployment with your sysadmin or [contact us](https://ds-wizard.org/contact).
+This example is intended for **local setup and testing**. For production use there are many more things to do such as authentication, controlling exposed ports (e.g. do not expose ports of `postgres` and `garage`), data backups, or using proxy (with HTTPS and WebSocket enabled). As it is highly dependent on your use case, consult production deployment with your sysadmin or [contact us](https://ds-wizard.org/contact).
 
-## Usage
+## Overview
 
-This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [docker-compose](https://docs.docker.com/compose/). You can clone the repository, create `.env` file using `example.env` and run it with:
+This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [Docker Compose](https://docs.docker.com/compose/) and [Garage](https://garagehq.deuxfleurs.fr/) as the S3-compatible object storage.
 
-```
-$ docker-compose up -d
-```
+It is intentionally set up as a **single-node local POC**:
 
-Then visit [localhost:8080/wizard](http://localhost:8080/wizard/) and login as `albert.einstein@example.com` with password `password`.
+- Garage runs in Docker on host ports `9000` (S3 API) and `9003` (Admin API)
+- DSW points to `http://host.docker.internal:9000` so presigned URLs are reachable from the browser
+- `create-bucket.sh` performs the one-time Garage bootstrap for this example
 
 For information on how to use Data Stewardship Wizard, visit our [guide](https://guide.ds-wizard.org).
 
-## Important notes
+## Quick Start
+
+1. Create the local environment file:
+
+   ```bash
+   cp example.env .env
+   ```
+
+2. Start the stack:
+
+   ```bash
+   docker compose up -d
+   ```
+
+3. Bootstrap Garage:
+
+   ```bash
+   ./create-bucket.sh
+   ```
+
+4. Open DSW:
+
+   [http://localhost:8080/wizard](http://localhost:8080/wizard/)
+
+5. Log in with:
+
+   - Email: `albert.einstein@example.com`
+   - Password: `password`
+
+## What The Bootstrap Does
+
+`create-bucket.sh` is intended to be safe to rerun for this local setup. It:
+
+- assigns the single-node Garage layout if the node still has no role
+- creates the configured S3 bucket if it does not exist
+- imports the configured Garage access key if it does not exist
+- grants read, write, and owner permissions on the bucket to that key
+
+## Verification Checklist
+
+After setup, use this checklist to confirm the Garage-backed deployment works.
+
+### Infrastructure checks
+
+```bash
+docker compose ps
+docker compose logs garage --tail=100
+docker compose logs server --tail=100
+docker compose logs docworker --tail=100
+```
+
+Expected results:
+
+- `garage` is running
+- `server` creates the S3 client successfully
+- `docworker` starts without S3 errors
+- no authentication, signing, or region errors appear in the logs
+
+### Application checks
+
+In the DSW UI, verify:
+
+1. the application opens and login works
+2. a project file can be uploaded
+3. the uploaded file can be downloaded
+4. a document preview can be generated
+5. a document template asset URL works, if applicable
+
+If these checks pass, Garage is functioning as a drop-in S3-compatible backend for this example deployment.
+
+## Important Notes
 
 * Use `docker compose pull` to get newest image (hotfixes) before starting
-* **Do not expose** PostgreSQL and MinIO to the internet (MinIO should be exposed only via proxy)
+* **Do not expose** PostgreSQL and Garage to the internet in a public deployment (Garage should be behind your proxy, firewall, or private network setup)
 * When you want to use DSW publicly, **set up HTTPS proxy** (e.g. Nginx) with a certificate for your domain and change default accounts
-* Set up volume mounted to PostgreSQL and MinIO containers for persistent data
-* You have to create S3 bucket, either using Web UI (for MinIO, you can expose and use `http://localhost:9000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb, e.g. use `create-bucket.sh` script
-* Always use **strong passwords** and never use default values, **change the secrets** in `config/application.yml` (32 character string in `general.secret` and RSA private key in `general.rsaPrivateKey` via `ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key`)
+* Set up volume mounted to PostgreSQL and Garage containers for persistent data
+* Garage needs a one-time bootstrap after the stack starts. `create-bucket.sh` assigns the single-node layout, creates the bucket, imports the configured S3 key, and grants bucket permissions
+* DSW uses `http://host.docker.internal:9000` as the S3 endpoint so both the DSW containers and the browser can reach the same local Garage endpoint
+* Always use **strong passwords** and never use default values, **change the secrets** in `config/application.yml` and `.env` (JWT secret, RSA private key, Garage RPC/admin tokens, and S3 credentials)
+
+## Troubleshooting
+
+If something does not work:
+
+```bash
+docker compose ps
+docker compose logs garage --tail=200
+docker compose logs server --tail=200
+docker compose logs docworker --tail=200
+```
+
+Common local issues:
+
+- Garage was started, but `create-bucket.sh` was not run yet
+- `.env` values and the imported Garage key no longer match
+- the server is still starting and has not reached a healthy state yet
+- an old local data directory contains stale state from a previous attempt
 
 ## Security Audit
 

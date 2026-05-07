@@ -4,22 +4,29 @@ services:
     image: datastewardshipwizard/wizard-server:${DSW_VERSION}
     platform: linux/amd64
     restart: always
+    # Local demo only; put an HTTPS proxy in front for shared deployments.
     ports:
-    # (!!) Expose only for local deployment, externally use HTTPS proxy
       - 127.0.0.1:3000:3000
     depends_on:
       - postgres
-      - minio
+      - garage
     volumes:
       - ./config/application.yml:/app/config/application.yml:ro
     extra_hosts:
       - host.docker.internal:host-gateway
+    # Keep runtime S3 values in .env so they stay aligned with Garage bootstrap.
+    environment:
+      S3_URL: ${S3_URL}
+      S3_USERNAME: ${S3_USERNAME}
+      S3_PASSWORD: ${S3_PASSWORD}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_REGION: ${S3_REGION}
 
   client:
     image: datastewardshipwizard/wizard-client:${DSW_VERSION}
     restart: always
+    # Local demo only; put an HTTPS proxy in front for shared deployments.
     ports:
-    # (!!) Expose only for local deployment, externally use HTTPS proxy
       - 127.0.0.1:8080:8080
     environment:
       API_URL: http://localhost:3000/wizard-api
@@ -29,12 +36,19 @@ services:
     restart: always
     depends_on:
       - postgres
-      - minio
+      - garage
       - server
     volumes:
       - ./config/application.yml:/app/config/application.yml:ro
     extra_hosts:
       - host.docker.internal:host-gateway
+    # Keep runtime S3 values in .env so they stay aligned with Garage bootstrap.
+    environment:
+      S3_URL: ${S3_URL}
+      S3_USERNAME: ${S3_USERNAME}
+      S3_PASSWORD: ${S3_PASSWORD}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_REGION: ${S3_REGION}
 
   mailer:
     image: datastewardshipwizard/mailer:${DSW_VERSION}
@@ -48,39 +62,37 @@ services:
   postgres:
     image: postgres:${POSTGRES_VERSION}
     restart: always
-    # (!!) Expose only for debugging locally
+    # Local debug access only.
     ports:
       - 127.0.0.1:5432:5432
-    # (!!) Change default password
+    # Change defaults before using this outside a local POC.
     environment:
-      POSTGRES_DB: engine-wizard
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    # (!!) Mount for persistent data
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    # Uncomment one option below to persist PostgreSQL data locally.
     # volumes:
     #   - db-data:/var/lib/postgresql/data
     # OR
     #   - ./db-data/data:/var/lib/postgresql/data
 
-  minio:
-    image: minio/minio:${MINIO_VERSION}
+  garage:
+    image: dxflrs/garage:${GARAGE_VERSION}
     restart: always
-    command: server /data --console-address ":9001"
-    # (!!) Expose only for debugging locally, externally use HTTPS proxy (see MinIO docs)
+    # Publish Garage on the host so both containers and the browser can reach the same endpoint.
+    # Do not expose this directly in a public deployment.
     ports:
-      - 9000:9000
-      - 9001:9001
-    # (!!) Change default password
+      - 9000:3900
+      - 9003:3903
+    # Change these defaults before sharing or reusing this setup.
     environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minioPassword
-      MINIO_VOLUMES: /data
-    # (!!) Mount and backup for persistent data
-    # volumes:
-    #   - s3-data:/data
-    # OR
-    #   - ./s3-data/data:/data
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+    volumes:
+      - ./config/garage.toml:/etc/garage.toml:ro
+      # Uncomment to persist Garage state between local restarts.
+      # - ./garage-data:/var/lib/garage
 
 # volumes:
 #   db-data:
-#   s3-data:
