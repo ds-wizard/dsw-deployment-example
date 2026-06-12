@@ -12,7 +12,7 @@ docker run --rm --net $MINIO_NET \
   -e MINIO_BUCKET=$MINIO_BUCKET \
   -e MINIO_USER=$MINIO_USER \
   -e MINIO_PASS=$MINIO_PASS \
-  --entrypoint sh minio/mc:$MINIO_VERSION -c "\
+  --entrypoint sh minio/minio:$MINIO_VERSION -c "\
   mc alias set dswminio http://minio:9000 $MINIO_USER $MINIO_PASS && \
   mc mb dswminio/\$MINIO_BUCKET
 "
