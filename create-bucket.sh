@@ -14,23 +14,11 @@ GARAGE_CAPACITY="${GARAGE_CAPACITY:-1G}"
 GARAGE_KEY_NAME="${GARAGE_KEY_NAME:-dsw-engine-wizard}"
 S3_URL="${S3_URL:-http://host.docker.internal:9000}"
 S3_BUCKET="${S3_BUCKET:-engine-wizard}"
-S3_USERNAME="${S3_USERNAME:-GK0123456789abcdef01234567}"
-S3_PASSWORD="${S3_PASSWORD:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}"
+S3_USERNAME="${S3_USERNAME:-garage}"
+S3_PASSWORD="${S3_PASSWORD:-garagePassword}"
 
 garage_exec() {
   docker compose exec -T "$GARAGE_SERVICE" /garage "$@"
-}
-
-garage_exec_quiet() {
-  output_file="$(mktemp)"
-  if garage_exec "$@" >"$output_file" 2>&1; then
-    rm -f "$output_file"
-    return 0
-  fi
-
-  cat "$output_file" >&2
-  rm -f "$output_file"
-  return 1
 }
 
 if [ -z "$(docker compose ps -q --status running "$GARAGE_SERVICE" 2>/dev/null)" ]; then
@@ -47,29 +35,20 @@ if [ -z "$NODE_ID" ]; then
 fi
 
 if printf '%s\n' "$STATUS" | grep -q "NO ROLE ASSIGNED"; then
-  echo "Assigning single-node Garage layout..."
-  garage_exec_quiet layout assign -z "$GARAGE_ZONE" -c "$GARAGE_CAPACITY" "$NODE_ID"
-  garage_exec_quiet layout apply --version 1
+  garage_exec layout assign -z "$GARAGE_ZONE" -c "$GARAGE_CAPACITY" "$NODE_ID" >/dev/null
+  garage_exec layout apply --version 1 >/dev/null
 fi
 
 if ! garage_exec bucket info "$S3_BUCKET" >/dev/null 2>&1; then
-  echo "Creating bucket '$S3_BUCKET'..."
-  garage_exec_quiet bucket create "$S3_BUCKET"
+  garage_exec bucket create "$S3_BUCKET" >/dev/null
 fi
 
 if ! garage_exec key info "$S3_USERNAME" >/dev/null 2>&1; then
-  echo "Importing access key '$S3_USERNAME'..."
-  garage_exec_quiet key import "$S3_USERNAME" "$S3_PASSWORD" -n "$GARAGE_KEY_NAME" --yes
+  garage_exec key import "$S3_USERNAME" "$S3_PASSWORD" -n "$GARAGE_KEY_NAME" --yes >/dev/null
 fi
 
-echo "Granting bucket permissions..."
-garage_exec_quiet bucket allow --read --write --owner "$S3_BUCKET" --key "$S3_USERNAME"
+garage_exec bucket allow --read --write --owner "$S3_BUCKET" --key "$S3_USERNAME" >/dev/null
 
-echo "Enabling public website access..."
-garage_exec_quiet bucket website --allow "$S3_BUCKET"
+garage_exec bucket website --allow "$S3_BUCKET" >/dev/null
 
-echo "Garage bootstrap completed."
-echo "S3 endpoint: $S3_URL"
-echo "Public website endpoint: http://$S3_BUCKET.web.garage.localhost:9002/"
-echo "Bucket: $S3_BUCKET"
-echo "Access key: $S3_USERNAME"
+echo "Garage is ready."

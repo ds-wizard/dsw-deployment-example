@@ -55,126 +55,11 @@ These are the only steps needed to run the local example.
    - Email: `albert.einstein@example.com`
    - Password: `password`
 
-## Optional
+## Notes
 
-These steps are not required to start the example. They are only useful if you want to inspect the local Garage setup.
-
-1. Open Garage UI:
-
-   [http://localhost:8081](http://localhost:8081)
-
-2. Log in to Garage UI with:
-
-   - Username: `admin`
-   - Password: `admin`
-
-## What The Bootstrap Does
-
-`create-bucket.sh` is intended to be safe to rerun for this local setup. It:
-
-- assigns the single-node Garage layout if the node still has no role
-- creates the configured S3 bucket if it does not exist
-- imports the configured Garage access key if it does not exist
-- grants read, write, and owner permissions on the bucket to that key
-
-## Optional Verification
-
-After setup, you can use this checklist to confirm the Garage-backed deployment works.
-
-### Infrastructure checks
-
-```bash
-docker compose ps
-docker compose logs garage --tail=100
-docker compose logs garage-ui --tail=100
-docker compose logs server --tail=100
-docker compose logs docworker --tail=100
-```
-
-Expected results:
-
-- `garage` is running
-- `garage-ui` is running
-- `server` creates the S3 client successfully
-- `docworker` starts without S3 errors
-- no authentication, signing, or region errors appear in the logs
-
-### Application checks
-
-In the DSW UI, verify:
-
-1. the application opens and login works
-2. a project file can be uploaded
-3. the uploaded file can be downloaded
-4. a document preview can be generated
-5. a document template asset URL works, if applicable
-
-In Garage UI, verify:
-
-1. login works
-2. the `engine-wizard` bucket is visible
-3. file upload works
-4. folder creation works
-
-If these checks pass, Garage is functioning as a drop-in S3-compatible backend for this example deployment.
-
-## Garage Notes
-
-### Current Local Model
-
-This repository uses Garage as a **local example only**. Our production setup still uses MinIO.
-
-- DSW uses a single S3 bucket: `engine-wizard`
-- Garage S3 API is available locally on `localhost:9000`
-- Garage website endpoint is available locally on `localhost:9002`
-- Garage UI is available locally on `localhost:8081`
-- A local `plugin-proxy` service exposes plugin assets on `localhost:9004`
-
-If you want to use locally stored plugin assets with this example, the plugin URL stored in DSW should point to the local proxy, for example:
-
-```text
-http://localhost:9004/plugins/<plugin-uuid>/<version>/
-```
-
-The actual plugin file must then be reachable at:
-
-```text
-http://localhost:9004/plugins/<plugin-uuid>/<version>/plugin.js
-```
-
-### Buckets And Plugins
-
-Garage is S3-compatible, so the same bucket model you use with MinIO can also be used with Garage.
-
-For this local example:
-
-- DSW uses one shared bucket
-- plugin assets can be exposed through the local `plugin-proxy`
-- the plugin URL in the DSW database should point to the public plugin location, not to the Garage UI
-
-If you use Garage in a self-hosted deployment, keep the same basic rule as with MinIO:
-
-- private DSW data should stay private
-- public plugins should live in a dedicated public location
-- do not mix private application data and public plugin assets in the same public bucket
-
-### Self-Hosted Security Note
-
-If a self-hosted user wants to expose Garage outside localhost, they should not publish the raw Garage ports directly to the internet.
-
-Instead, they should put Garage behind an HTTPS reverse proxy or another equivalent security layer that provides:
-
-- TLS / HTTPS
-- authentication for admin access
-- controlled exposure of only the endpoints that should be public
-
-In practice, that usually means:
-
-- DSW stays behind its normal public HTTPS setup
-- public plugin files are exposed through a dedicated public URL
-- Garage admin or UI access is protected separately
-
-This repository does not try to provide a full production Garage deployment. It only illustrates how Garage can be used locally in the deployment example.
+- Garage UI is available on [http://localhost:8081](http://localhost:8081) with username `admin` and password `admin`
+- For local plugin testing, the plugin URL can point to `http://localhost:9004/plugins/<plugin-uuid>/<version>/`
+- This repository is a local example only; if you self-host Garage publicly, place it behind HTTPS reverse proxy or another equivalent security layer
 
 ## Important Notes
 
@@ -187,26 +72,6 @@ This repository does not try to provide a full production Garage deployment. It 
 * DSW uses `http://host.docker.internal:9000` as the S3 endpoint so both the DSW containers and the browser can reach the same local Garage endpoint
 * Garage UI is configured with local basic auth defaults for this POC; change them before sharing the setup
 * Always use **strong passwords** and never use default values, **change the demo secrets** in `config/application.yml` and `.env` before using this anywhere except local testing
-
-## Troubleshooting
-
-If something does not work:
-
-```bash
-docker compose ps
-docker compose logs garage --tail=200
-docker compose logs garage-ui --tail=200
-docker compose logs server --tail=200
-docker compose logs docworker --tail=200
-```
-
-Common local issues:
-
-- Garage was started, but `create-bucket.sh` was not run yet
-- Garage UI started, but Garage itself is not healthy yet
-- `.env` values and the imported Garage key no longer match
-- the server is still starting and has not reached a healthy state yet
-- an old local data directory contains stale state from a previous attempt
 
 ## Security Audit
 
