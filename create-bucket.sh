@@ -21,6 +21,18 @@ garage_exec() {
   docker compose exec -T "$GARAGE_SERVICE" /garage "$@"
 }
 
+garage_exec_quiet() {
+  output_file="$(mktemp)"
+  if garage_exec "$@" >"$output_file" 2>&1; then
+    rm -f "$output_file"
+    return 0
+  fi
+
+  cat "$output_file" >&2
+  rm -f "$output_file"
+  return 1
+}
+
 if [ -z "$(docker compose ps -q --status running "$GARAGE_SERVICE" 2>/dev/null)" ]; then
   echo "Garage service '$GARAGE_SERVICE' is not running. Start the stack first with: docker compose up -d" >&2
   exit 1
@@ -35,21 +47,29 @@ if [ -z "$NODE_ID" ]; then
 fi
 
 if printf '%s\n' "$STATUS" | grep -q "NO ROLE ASSIGNED"; then
-  garage_exec layout assign -z "$GARAGE_ZONE" -c "$GARAGE_CAPACITY" "$NODE_ID"
-  garage_exec layout apply --version 1
+  echo "Assigning single-node Garage layout..."
+  garage_exec_quiet layout assign -z "$GARAGE_ZONE" -c "$GARAGE_CAPACITY" "$NODE_ID"
+  garage_exec_quiet layout apply --version 1
 fi
 
 if ! garage_exec bucket info "$S3_BUCKET" >/dev/null 2>&1; then
-  garage_exec bucket create "$S3_BUCKET"
+  echo "Creating bucket '$S3_BUCKET'..."
+  garage_exec_quiet bucket create "$S3_BUCKET"
 fi
 
 if ! garage_exec key info "$S3_USERNAME" >/dev/null 2>&1; then
-  garage_exec key import "$S3_USERNAME" "$S3_PASSWORD" -n "$GARAGE_KEY_NAME" --yes
+  echo "Importing access key '$S3_USERNAME'..."
+  garage_exec_quiet key import "$S3_USERNAME" "$S3_PASSWORD" -n "$GARAGE_KEY_NAME" --yes
 fi
 
-garage_exec bucket allow --read --write --owner "$S3_BUCKET" --key "$S3_USERNAME"
+echo "Granting bucket permissions..."
+garage_exec_quiet bucket allow --read --write --owner "$S3_BUCKET" --key "$S3_USERNAME"
+
+echo "Enabling public website access..."
+garage_exec_quiet bucket website --allow "$S3_BUCKET"
 
 echo "Garage bootstrap completed."
 echo "S3 endpoint: $S3_URL"
+echo "Public website endpoint: http://$S3_BUCKET.web.garage.localhost:9002/"
 echo "Bucket: $S3_BUCKET"
 echo "Access key: $S3_USERNAME"

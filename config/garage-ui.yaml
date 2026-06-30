@@ -1,0 +1,27 @@
+server:
+  host: "::"
+  port: 8080
+  environment: "production"
+  domain: "localhost"
+  protocol: "http"
+  root_url: "http://localhost:8081"
+
+garage:
+  endpoint: "http://garage:3900"
+  admin_endpoint: "http://garage:3903"
+  region: "garage"
+
+auth:
+  admin:
+    enabled: true
+  token:
+    enabled: false
+  session_max_age: 86400
+  cookie_name: "garage_session"
+  cookie_secure: false
+  cookie_http_only: true
+  cookie_same_site: "lax"
+
+logging:
+  level: "info"
+  format: "text"

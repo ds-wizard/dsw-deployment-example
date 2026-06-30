@@ -31,6 +31,32 @@ services:
     environment:
       API_URL: http://localhost:3000/wizard-api
 
+  garage-ui:
+    image: noooste/garage-ui:${GARAGE_UI_VERSION}
+    restart: always
+    # Local admin UI only; do not expose this directly in a public deployment.
+    ports:
+      - 127.0.0.1:${GARAGE_UI_PORT}:8080
+    depends_on:
+      - garage
+    volumes:
+      - ./config/garage-ui.yaml:/app/config.yaml:ro
+    environment:
+      GARAGE_UI_SERVER_ROOT_URL: http://localhost:${GARAGE_UI_PORT}
+      GARAGE_UI_GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_UI_AUTH_ADMIN_USERNAME: ${GARAGE_UI_ADMIN_USERNAME}
+      GARAGE_UI_AUTH_ADMIN_PASSWORD: ${GARAGE_UI_ADMIN_PASSWORD}
+
+  plugin-proxy:
+    image: nginx:1.27-alpine
+    restart: always
+    ports:
+      - 127.0.0.1:9004:8080
+    depends_on:
+      - garage
+    volumes:
+      - ./config/plugin-proxy.conf:/etc/nginx/conf.d/default.conf:ro
+
   docworker:
     image: datastewardshipwizard/document-worker:${DSW_VERSION}
     restart: always
@@ -83,6 +109,7 @@ services:
     # Do not expose this directly in a public deployment.
     ports:
       - 9000:3900
+      - 9002:3902
       - 9003:3903
     # Change these defaults before sharing or reusing this setup.
     environment:
