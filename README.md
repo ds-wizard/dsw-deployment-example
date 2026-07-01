@@ -58,6 +58,7 @@ These are the only steps needed to run the local example.
 ## Notes
 
 - Garage UI is available on [http://localhost:8081](http://localhost:8081) with username `admin` and password `admin`
+- `create-bucket.sh` prepares both the private `engine-wizard` bucket and the public `plugins` bucket
 - For local plugin testing, the plugin URL can point to `http://localhost:9004/plugins/<plugin-uuid>/<version>/`
 - This repository is a local example only; if you self-host Garage publicly, place it behind HTTPS reverse proxy or another equivalent security layer
 
