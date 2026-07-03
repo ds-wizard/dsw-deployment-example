@@ -15,8 +15,9 @@ This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard
 
 It is intentionally set up as a **single-node local POC**:
 
-- Garage runs in Docker on host ports `9000` (S3 API) and `9003` (Admin API)
+- Garage runs in Docker on host ports `9000` (S3 API), `9002` (web endpoint), and `9003` (Admin API)
 - Garage UI runs on `127.0.0.1:8081`
+- Plugin files are served locally through `127.0.0.1:9004`
 - DSW points to `http://host.docker.internal:9000` so presigned URLs are reachable from the browser
 - `create-bucket.sh` performs the one-time Garage bootstrap for this example
 
@@ -73,7 +74,7 @@ These are the only steps needed to run the local example.
 * If you self-host Garage publicly, place it behind an HTTPS reverse proxy or another equivalent security layer and protect admin access
 * When you want to use DSW publicly, **set up HTTPS proxy** (e.g. Nginx) with a certificate for your domain and change default accounts
 * Set up volume mounted to PostgreSQL and Garage containers for persistent data
-* Garage needs a one-time bootstrap after the stack starts. `create-bucket.sh` assigns the single-node layout, creates the bucket, imports the configured S3 key, and grants bucket permissions
+* Garage needs a one-time bootstrap after the stack starts. `create-bucket.sh` assigns the single-node layout, creates the `engine-wizard` and `plugins` buckets, imports the configured S3 key, and grants bucket permissions
 * DSW uses `http://host.docker.internal:9000` as the S3 endpoint so both the DSW containers and the browser can reach the same local Garage endpoint
 * Garage UI is configured with local basic auth defaults for this POC; change them before sharing the setup
 * Always use **strong passwords** and never use default values, **change the demo secrets** in `config/application.yml` and `.env` before using this anywhere except local testing
