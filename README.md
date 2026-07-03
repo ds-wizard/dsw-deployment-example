@@ -59,7 +59,11 @@ These are the only steps needed to run the local example.
 
 - Garage UI is available on [http://localhost:8081](http://localhost:8081) with username `admin` and password `admin`
 - `create-bucket.sh` prepares both the private `engine-wizard` bucket and the public `plugins` bucket
-- For local plugin testing, the plugin URL can point to `http://localhost:9004/plugins/<plugin-uuid>/<version>/`
+- For local plugin testing, upload plugin files to the `plugins` bucket under `<plugin-uuid>/<version>/`
+- The plugin file should be stored as `<plugin-uuid>/<version>/plugin.js`
+- The plugin URL in the DSW database should point to `http://localhost:9004/<plugin-uuid>/<version>/`
+- Example DB value: `http://localhost:9004/6534f8f7-0d43-4c4d-9157-15af17f37649/1.2.0/`
+- Usable plugin examples: [replies-importer-plugin](https://github.com/ds-wizard/replies-importer-plugin) and [madmp-importer-plugin](https://github.com/ds-wizard/madmp-importer-plugin)
 - This repository is a local example only; if you self-host Garage publicly, place it behind HTTPS reverse proxy or another equivalent security layer
 
 ## Important Notes
