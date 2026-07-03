@@ -62,14 +62,17 @@ database:
 # (!!) Change default password
 s3:
   url: http://host.docker.internal:9000
-  username: minio
-  password: minioPassword
+  # Garage access key ID must start with GK and contain 24 hex characters after it.
+  username: GK111111111111111111111111
+  # Garage secret key must be 64 hex characters.
+  password: "1111111111111111111111111111111111111111111111111111111111111111"
   bucket: engine-wizard
+  region: garage
 
 # (!!) Configure SMTP
 mail:
   enabled: false
-  name: 
+  name:
   email:
   provider: smtp
   smtp:

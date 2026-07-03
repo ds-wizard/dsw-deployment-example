@@ -7,28 +7,77 @@ If you use or plan to use DSW, please let us know via [info@ds-wizard.org](mailt
 - Join our [**Discord** server](https://discord.gg/MW3H9tdMcT), where you can be notified about important updates and releases + we can discuss your issues and ideas.
 - Provide us feedback (what is good and bad, [feature requests](https://ideas.ds-wizard.org/), etc.)
 
-This example is intended for **local setup and testing**. For production use there are many more things to do such as authentication, controlling exposed ports (e.g. do not expose ports of `postgres` and `minio`), data backups, or using proxy (with HTTPS and WebSocket enabled). As it is highly dependent on your use case, consult production deployment with your sysadmin or [contact us](https://ds-wizard.org/contact).
+This example is intended for **local setup and testing**. For production use there are many more things to do such as authentication, controlling exposed ports (e.g. do not expose ports of `postgres` and `garage`), data backups, or using proxy (with HTTPS and WebSocket enabled). As it is highly dependent on your use case, consult production deployment with your sysadmin or [contact us](https://ds-wizard.org/contact).
 
-## Usage
+## Overview
 
-This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [docker-compose](https://docs.docker.com/compose/). You can clone the repository, create `.env` file using `example.env` and run it with:
+This is an example deployment of the [Data Stewardship Wizard](https://ds-wizard.org) using [Docker Compose](https://docs.docker.com/compose/) and [Garage](https://garagehq.deuxfleurs.fr/) as the S3-compatible object storage.
 
-```
-$ docker-compose up -d
-```
+It is intentionally set up as a **single-node local POC**:
 
-Then visit [localhost:8080/wizard](http://localhost:8080/wizard/) and login as `albert.einstein@example.com` with password `password`.
+- Garage runs in Docker on host ports `9000` (S3 API), `9002` (web endpoint), and `9003` (Admin API)
+- Garage UI runs on `127.0.0.1:8081`
+- Plugin files are served locally through `127.0.0.1:9004`
+- DSW points to `http://host.docker.internal:9000` so presigned URLs are reachable from the browser
+- `create-bucket.sh` performs the one-time Garage bootstrap for this example
 
 For information on how to use Data Stewardship Wizard, visit our [guide](https://guide.ds-wizard.org).
 
-## Important notes
+## Required Steps
+
+These are the only steps needed to run the local example.
+
+1. Create the local environment file:
+
+   ```bash
+   cp example.env .env
+   ```
+
+2. The tracked `config/application.yml` already contains demo application values for this example.
+
+3. Start the stack:
+
+   ```bash
+   docker compose up -d
+   ```
+
+4. Bootstrap Garage:
+
+   ```bash
+   ./create-bucket.sh
+   ```
+
+5. Open DSW:
+
+   [http://localhost:8080/wizard](http://localhost:8080/wizard/)
+
+6. Log in with:
+
+   - Email: `albert.einstein@example.com`
+   - Password: `password`
+
+## Notes
+
+- Garage UI is available on [http://localhost:8081](http://localhost:8081) with username `admin` and password `admin`
+- `create-bucket.sh` prepares both the private `engine-wizard` bucket and the public `plugins` bucket
+- For local plugin testing, upload plugin files to the `plugins` bucket under `<plugin-uuid>/<version>/`
+- The plugin file should be stored as `<plugin-uuid>/<version>/plugin.js`
+- The plugin URL in the DSW database should point to `http://localhost:9004/<plugin-uuid>/<version>/`
+- Example DB value: `http://localhost:9004/6534f8f7-0d43-4c4d-9157-15af17f37649/1.2.0/`
+- Usable plugin examples: [replies-importer-plugin](https://github.com/ds-wizard/replies-importer-plugin) and [madmp-importer-plugin](https://github.com/ds-wizard/madmp-importer-plugin)
+- This repository is a local example only; if you self-host Garage publicly, place it behind HTTPS reverse proxy or another equivalent security layer
+
+## Important Notes
 
 * Use `docker compose pull` to get newest image (hotfixes) before starting
-* **Do not expose** PostgreSQL and MinIO to the internet (MinIO should be exposed only via proxy)
+* **Do not expose** PostgreSQL or raw Garage ports directly to the internet in a public deployment
+* If you self-host Garage publicly, place it behind an HTTPS reverse proxy or another equivalent security layer and protect admin access
 * When you want to use DSW publicly, **set up HTTPS proxy** (e.g. Nginx) with a certificate for your domain and change default accounts
-* Set up volume mounted to PostgreSQL and MinIO containers for persistent data
-* You have to create S3 bucket, either using Web UI (for MinIO, you can expose and use `http://localhost:9000`) or via client: https://docs.min.io/docs/minio-client-complete-guide.html#mb, e.g. use `create-bucket.sh` script
-* Always use **strong passwords** and never use default values, **change the secrets** in `config/application.yml` (32 character string in `general.secret` and RSA private key in `general.rsaPrivateKey` via `ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key`)
+* Set up volume mounted to PostgreSQL and Garage containers for persistent data
+* Garage needs a one-time bootstrap after the stack starts. `create-bucket.sh` assigns the single-node layout, creates the `engine-wizard` and `plugins` buckets, imports the configured S3 key, and grants bucket permissions
+* DSW uses `http://host.docker.internal:9000` as the S3 endpoint so both the DSW containers and the browser can reach the same local Garage endpoint
+* Garage UI is configured with local basic auth defaults for this POC; change them before sharing the setup
+* Always use **strong passwords** and never use default values, **change the demo secrets** in `config/application.yml` and `.env` before using this anywhere except local testing
 
 ## Security Audit
 
