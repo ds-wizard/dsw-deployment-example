@@ -16,10 +16,10 @@ jobs:
       matrix:
         image:
           # Develop
-          - dswbot/wizard-server:develop
-          - dswbot/wizard-client:develop
-          - dswbot/document-worker:develop
-          - dswbot/mailer:develop
+          - ghcr.io/ds-wizard/wizard-server:develop
+          - ghcr.io/ds-wizard/wizard-client:develop
+          - ghcr.io/ds-wizard/document-worker:develop
+          - ghcr.io/ds-wizard/mailer:develop
           # Maintained
           - datastewardshipwizard/wizard-server:4.32
           - datastewardshipwizard/wizard-client:4.32
