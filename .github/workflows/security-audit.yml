@@ -21,15 +21,15 @@ jobs:
           - ghcr.io/ds-wizard/document-worker:main
           - ghcr.io/ds-wizard/mailer:main
           # Older maintained versions
-          - datastewardshipwizard/wizard-server:4.33
-          - datastewardshipwizard/wizard-client:4.33
-          - datastewardshipwizard/document-worker:4.33
-          - datastewardshipwizard/mailer:4.33
-          # Latest version
           - datastewardshipwizard/wizard-server:4.34
           - datastewardshipwizard/wizard-client:4.34
           - datastewardshipwizard/document-worker:4.34
           - datastewardshipwizard/mailer:4.34
+          # Latest version
+          - datastewardshipwizard/wizard-server:4.35
+          - datastewardshipwizard/wizard-client:4.35
+          - datastewardshipwizard/document-worker:4.35
+          - datastewardshipwizard/mailer:4.35
 
     steps:
       - name: Checkout repository
