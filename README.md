@@ -47,6 +47,8 @@ These are the only steps needed to run the local example.
    ./create-bucket.sh
    ```
 
+   On Windows, run it from Git Bash (or WSL) with Docker Desktop running: `bash create-bucket.sh`. If you cloned the repository before `.gitattributes` was added and the script fails with errors like `$'\r': command not found`, pull the latest changes and re-checkout it with `rm create-bucket.sh && git checkout -- create-bucket.sh`.
+
 5. Open DSW:
 
    [http://localhost:8080](http://localhost:8080)

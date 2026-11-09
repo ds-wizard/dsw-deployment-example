@@ -4,10 +4,24 @@ set -eu
 
 ENV_FILE="${ENV_FILE:-.env}"
 
-if [ -f "$ENV_FILE" ]; then
+# Git Bash / MSYS on Windows rewrites arguments that look like POSIX paths
+# (e.g. "/garage" becomes "C:/Program Files/Git/garage") before passing them
+# to native Windows programs such as docker.exe. Exclude the in-container
+# Garage binary path from that conversion. This is a no-op on Linux/macOS.
+export MSYS2_ARG_CONV_EXCL="/garage"
+
+load_env_file() {
+  # Strip Windows CRLF line endings so values do not end with a stray "\r".
+  env_tmp="$(mktemp)"
+  tr -d '\r' <"$1" >"$env_tmp"
   set -a
-  . "./$ENV_FILE"
+  . "$env_tmp"
   set +a
+  rm -f "$env_tmp"
+}
+
+if [ -f "$ENV_FILE" ]; then
+  load_env_file "$ENV_FILE"
 fi
 
 GARAGE_SERVICE="${GARAGE_SERVICE:-garage}"
@@ -70,7 +84,7 @@ if [ -z "$(compose_ps 2>/dev/null)" ]; then
   exit 1
 fi
 
-STATUS="$(garage_exec status 2>/dev/null)"
+STATUS="$(garage_exec status 2>/dev/null | tr -d '\r')"
 NODE_ID="$(printf '%s\n' "$STATUS" | awk '/==== HEALTHY NODES ====/{flag=1; next} flag && $1 ~ /^[0-9a-f]+$/ {print $1; exit}')"
 
 if [ -z "$NODE_ID" ]; then
