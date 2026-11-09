@@ -1,6 +1,6 @@
 # (!!) Change the secret and RDA private key to your own
 general:
-  clientUrl: http://localhost:8080/wizard
+  clientUrl: http://localhost:8080
   secret: b7zFNUhFYIFLmDSFKFkp0Bnp8Z3uWGnH
   rsaPrivateKey: |
     -----BEGIN RSA PRIVATE KEY-----

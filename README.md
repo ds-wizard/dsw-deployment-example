@@ -49,7 +49,7 @@ These are the only steps needed to run the local example.
 
 5. Open DSW:
 
-   [http://localhost:8080/wizard](http://localhost:8080/wizard/)
+   [http://localhost:8080](http://localhost:8080)
 
 6. Log in with:
 
